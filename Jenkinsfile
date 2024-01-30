@@ -1,51 +1,48 @@
 pipeline {
+    agent any
+    
+    environment {
+        MULE_HOME = 'C:\7.15\AnypointStudio-7.15.0-win64\AnypointStudio\plugins\org.mule.tooling.server.4.4.0.ee_7.11.0.202303211414\mule'
+        MULE_PROJECT_NAME = 'cicd_exercise'
+    }
 
-agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Check out your MuleSoft project from version control
+                    checkout scm
+                }
+            }
+        }
 
-stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Build the MuleSoft project using Maven or any other build tool
+                    sh "${MULE_HOME}/bin/mule -e ${MULE_PROJECT_NAME} clean package"
+                }
+            }
+        }
 
-stage(‘Build Application’) {
+        stage('Test') {
+            steps {
+                script {
+                    // Run tests for your MuleSoft project
+                    sh "${MULE_HOME}/bin/mule -e ${MULE_PROJECT_NAME} test"
+                }
+            }
+        }
 
-steps {
+    }
 
-bat ‘mvn clean install’
+    post {
+        success {
+            echo 'MuleSoft project successfully built, tested, and deployed!'
+        }
 
-}
-
-}
-
-stage(‘Test’) {
-
-steps {
-
-echo ‘Application in Testing Phase…’
-
-bat ‘mvn test’
-
-}
-
-}
-
-stage(‘Deploy CloudHub’) {
-
-environment {
-
-ANYPOINT_CREDENTIALS = credentials(‘anypointPlatform’)
-
-}
-
-steps {
-
-echo ‘Deploying mule project due to the latest code commit…’
-
-echo ‘Deploying to the configured environment….’
-
-bat ‘mvn package deploy -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -DworkerType=Micro -Dworkers=1 -Dregion=us-west-2’
-
-}
-
-}
-
-}
-
+        failure {
+            echo 'MuleSoft project build, test, or deployment failed.'
+        }
+    }
 }
