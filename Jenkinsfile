@@ -12,19 +12,7 @@ pipeline {
         stage('Build') {
     		steps {
        		 	script {
-            	 // Print the available Maven installations
-           		 def mavenInstalls = tool 'Maven'
-           		 echo "Available Maven installations: ${mavenInstalls}"
-
-            	 // Set the path to the Maven home directory
-           		 def mavenHome = tool 'Maven'
-            	 echo "Maven home: ${mavenHome}"
-
-            	 // Print the Maven version
-            	 sh "${mavenHome}/bin/mvn --version"
-
-            	 // Build the MuleSoft project using Maven
-            	 sh "${mavenHome}/bin/mvn clean package"
+            	 bat 'mvn clean install'
         	}
     	}
 	}
