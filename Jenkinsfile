@@ -9,13 +9,24 @@ pipeline {
             }
         }
 
-        stage('Build') {
+    	stage('Build') {
     		steps {
-       		 	script {
-            	 bat 'mvn clean install'
+        		script {
+            	// Specify the full path to the Maven executable
+            	def mavenHome = tool 'Maven'
+            	def mavenExecutable = "${mavenHome}/bin/mvn"
+
+            	echo "Maven home: ${mavenHome}"
+            	echo "Maven executable: ${mavenExecutable}"
+
+            	// Print the Maven version
+            	bat "${mavenExecutable} --version"
+
+            	// Build the MuleSoft project using Maven
+            	bat "${mavenExecutable} clean install"
         	}
-    	}
-	}
+    		}
+		}
 
         stage('Test') {
             steps {
