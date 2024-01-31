@@ -13,7 +13,7 @@ pipeline {
     		steps {
         		script {
             	// Specify the full path to the Maven executable
-            	def mavenHome = tool 'Maven'
+            	def mavenHome = "C:\Users\younes.koubousse_cap\Downloads\apache-maven-3.8.6-bin\apache-maven-3.8.6"
             	def mavenExecutable = "${mavenHome}/bin/mvn"
 
             	echo "Maven home: ${mavenHome}"
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 // Run tests for the MuleSoft project using the default Maven tool
                 script {
-                    def mavenHome = tool 'Maven'
+                    def mavenHome = tool 'Maven 3.8'
                     sh "${mavenHome}/bin/mvn test"
                 }
             }
