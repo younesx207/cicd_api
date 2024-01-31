@@ -13,7 +13,7 @@ pipeline {
     		steps {
         		script {
             	// Specify the full path to the Maven executable
-            	def mavenHome = "C:\Users\younes.koubousse_cap\Downloads\apache-maven-3.8.6-bin\apache-maven-3.8.6"
+            	def mavenHome = tool 'Maven 3.8'
             	def mavenExecutable = "${mavenHome}/bin/mvn"
 
             	echo "Maven home: ${mavenHome}"
