@@ -32,6 +32,7 @@ pipeline {
             steps {
                 // Run tests for the MuleSoft project using the default Maven tool
                 script {
+                    def mavenHome = tool 'Maven 3.8'
                     def mavenExecutable = "${mavenHome}/bin/mvn"
                     bat "${mavenExecutable} clean test"
                 }
