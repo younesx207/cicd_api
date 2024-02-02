@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="cicd_api-suite.xml" />
+	<munit:test name="cicd_apiFlow-test" doc:id="505f6067-3dfc-4dff-a2ef-a3b2da293380" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="434d58f5-4972-4e18-9c65-b13ae70239ea" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c7fb41fb-9ef6-45a3-9298-00d255b8a894" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="7e7f1560-beed-4ee4-a0bb-29692689bf2b" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import cicdapiFlowtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="7d166898-2b0d-476d-8b18-d9d7eea92df9" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import cicdapiFlowtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="4d3f1072-ff5d-450e-894b-a1122a5fd7b3" >
+				<munit:payload value="#[readUrl('classpath://cicdapiFlowtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://cicdapiFlowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to cicd_apiFlow" doc:id="9e45d540-c1d3-477f-baf6-765bc6e4b482" name="cicd_apiFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="536b754f-e6f6-4836-ab8c-9f57a712ca14" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import cicdapiFlowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="5ea18245-a859-456c-bc10-9aff02d987bd" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c7fb41fb-9ef6-45a3-9298-00d255b8a894" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
