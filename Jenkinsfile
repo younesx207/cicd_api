@@ -23,7 +23,7 @@ pipeline {
             	bat "${mavenExecutable} --version"
 
             	// Build the MuleSoft project using Maven
-            	bat "${mavenExecutable} clean install"
+            	bat "${mavenExecutable} clean package -nsu -DskipMunitTests"
         	}
     		}
 		}
@@ -33,7 +33,7 @@ pipeline {
                 // Run tests for the MuleSoft project using the default Maven tool
                 script {
                     def mavenHome = tool 'Maven 3.8'
-                    sh "${mavenHome}/bin/mvn test"
+                    sh "${mavenHome}/bin/mvn clean test"
                 }
             }
         }
