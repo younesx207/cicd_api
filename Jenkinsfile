@@ -40,7 +40,7 @@ pipeline {
                     def mavenHome = tool 'Maven 3.8'
             		def mavenExecutable = "${mavenHome}/bin/mvn"
             		
-            		bat "${mavenExecutable} clean deploy -DmuleDeploy -Dmule.version=4.4.0-20230320 -Dusername=YounesCap4 -Dpassword=CicdExercise1 -Denv=Sandbox -Dappname=cicd-exercise -Dbusiness=cap -DvCore=Micro -Dworkers=1"
+            		bat "${mavenExecutable} clean deploy -DmuleDeploy"
                 }
             }
         }
