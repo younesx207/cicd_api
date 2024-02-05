@@ -39,7 +39,6 @@ pipeline {
                 }
             }
         }
-    }
     
     	stage('Deploying to cloudhub') {
             steps {
